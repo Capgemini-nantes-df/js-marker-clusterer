@@ -39,7 +39,8 @@ index.html
             markers.push(marker);
 
             var options = {
-                imagePath: 'images/m'
+                imagePath: 'images/m',
+                *centroidCenter:'true'*
             };
 
             var markerCluster = new MarkerClusterer(map, markers, options);
