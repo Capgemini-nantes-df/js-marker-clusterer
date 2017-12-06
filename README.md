@@ -8,13 +8,7 @@ A Google Maps JavaScript API v3 library to create and manage per-zoom-level clus
 
 [Reference documentation](https://googlemaps.github.io/js-marker-clusterer/docs/reference.html)
 
-Migrated from the [Google Maps JavaScript API utility libraries on Google Code](https://code.google.com/p/google-maps-utility-library-v3/).
-
 ## Usage
-
-Download or clone `markerclusterer.js` and images `m1.png` to `m5.png`, save images in `images` folder.
-
-To use your own custom cluster images just name your images `m[1-5].png` or set the `imagePath` option to the location and name of your images like this: `imagePath: 'customImages/cat'` for images `cat1.png` to `cat5.png`.
 
 index.html
 
@@ -50,7 +44,3 @@ index.html
     </script>
     ...
     
-
-## Live Demos
-
-[Examples page](https://googlemaps.github.io/js-marker-clusterer/docs/examples.html)
