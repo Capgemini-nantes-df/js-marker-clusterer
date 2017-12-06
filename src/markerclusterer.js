@@ -152,6 +152,18 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     this.averageCenter_ = options['averageCenter'];
   }
 
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.centroidCenter_ = false;
+
+  if (options['centroidCenter'] != undefined) {
+      this.centroidCenter_ = options['centroidCenter'];
+  }
+
+
+
   this.setupStyles_();
 
   this.setMap(map);
@@ -303,6 +315,16 @@ MarkerClusterer.prototype.isZoomOnClick = function() {
  */
 MarkerClusterer.prototype.isAverageCenter = function() {
   return this.averageCenter_;
+};
+
+
+/**
+ * Whether centroid center is set.
+ *
+ * @return {boolean} True if averageCenter_ is set.
+ */
+MarkerClusterer.prototype.isCentroidCenter = function() {
+    return this.centroidCenter_;
 };
 
 
@@ -806,6 +828,7 @@ function Cluster(markerClusterer) {
   this.gridSize_ = markerClusterer.getGridSize();
   this.minClusterSize_ = markerClusterer.getMinClusterSize();
   this.averageCenter_ = markerClusterer.isAverageCenter();
+  this.centroidCenter_ = markerClusterer.isCentroidCenter();
   this.center_ = null;
   this.markers_ = [];
   this.bounds_ = null;
@@ -848,12 +871,20 @@ Cluster.prototype.addMarker = function(marker) {
     this.center_ = marker.getPosition();
     this.calculateBounds_();
   } else {
-    if (this.averageCenter_) {
-      var l = this.markers_.length + 1;
-      var lat = (this.center_.lat() * (l-1) + marker.getPosition().lat()) / l;
-      var lng = (this.center_.lng() * (l-1) + marker.getPosition().lng()) / l;
-      this.center_ = new google.maps.LatLng(lat, lng);
-      this.calculateBounds_();
+    if (this.centroidCenter_){
+        var bounds = new google.maps.LatLngBounds();
+        for (var i=0;i<this.markers_.length;i++){
+            bounds.extend(this.markers_[i].getPosition());
+        }
+        this.center_=bounds.getCenter();
+        this.calculateBounds_();    } else {
+      if (this.averageCenter_) {
+          var l = this.markers_.length + 1;
+          var lat = (this.center_.lat() * (l-1) + marker.getPosition().lat()) / l;
+          var lng = (this.center_.lng() * (l-1) + marker.getPosition().lng()) / l;
+          this.center_ = new google.maps.LatLng(lat, lng);
+          this.calculateBounds_();
+      }
     }
   }
 
